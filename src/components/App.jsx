@@ -16,6 +16,9 @@ const App = () => {
   const [hasMoreImages, setHasMoreImages] = useState(true);
 
   useEffect(() => {
+    if (!query) {
+      return;
+    }
     const fetchImages = async () => {
       try {
         setIsLoading(true);
@@ -28,11 +31,8 @@ const App = () => {
         setIsLoading(false);
       }
     };
-
-    if (query && (currentPage === 1 || hasMoreImages)) {
-      fetchImages();
-    }
-  }, [query, currentPage, hasMoreImages]);
+    fetchImages();
+  }, [query, currentPage]);
 
   const handleImageClick = imageUrl => {
     setModalImageUrl(imageUrl);
@@ -40,9 +40,7 @@ const App = () => {
   };
 
   const handleLoadMore = () => {
-    if (hasMoreImages) {
-      setCurrentPage(prevPage => prevPage + 1);
-    }
+    setCurrentPage(prevPage => prevPage + 1);
   };
 
   const handleSearchSubmit = query => {
